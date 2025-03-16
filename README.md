@@ -1,3 +1,10 @@
+## OverTheWire (Bandit)
+
+OverTheWire es una plataforma diseñada para aprender a utilizar la línea de comandos de Linux y explorar conceptos de ciberseguridad a través de desafíos interactivos. Los niveles están disponibles en el siguiente enlace: https://overthewire.org/wargames/bandit/  
+
+El objetivo de este repositorio es proporcionar una guía para resolver los niveles de OverTheWire, explicar el funcionamiento de los comandos utilizados, evaluar otros posibles métodos y determinar la mejor opción.  
+
+
 ### - Bandit Level 1 → Level 2  
 
 LEVEL GOAL: The password for the next level is stored in a file called - located in the home directory
@@ -69,18 +76,18 @@ LEVEL GOAL: The password for the next level is stored in the only human-readable
 
 2. `find . -name - file* | xargs file`  
 
-```sh
-./inhere/-file00: data
-./inhere/-file03: data
-./inhere/-file08: data
-./inhere/-file02: data
-./inhere/-file04: data
-./inhere/-file01: data
-./inhere/-file07: ASCII text
-./inhere/-file06: data
-./inhere/-file05: data
-./inhere/-file09: data
-```  
+
+> ./inhere/-file00: data
+> ./inhere/-file03: data
+> ./inhere/-file08: data
+> ./inhere/-file02: data
+> ./inhere/-file04: data
+> ./inhere/-file01: data
+> ./inhere/-file07: ASCII text
+> ./inhere/-file06: data
+> ./inhere/-file05: data
+> ./inhere/-file09: data
+  
 
 Se elige el ./inhere/-file07 porque es el unico legible por el humano (ASCII text). Luego ejecuto el siguiente comando:  
 
@@ -122,7 +129,7 @@ The password for the next level is stored somewhere on the server and has all of
 > owned by group bandit6  
 > 33 bytes in size  
 
-S :>>
+**Solución:**   
 
 Comando: `find / -user bandit7 -group bandit6 -size 33c 2>/dev/null | xargs cat`  
 
@@ -138,7 +145,7 @@ Comando: `find / -user bandit7 -group bandit6 -size 33c 2>/dev/null | xargs cat`
 
 LEVEL GOAL: The password for the next level is stored in the file data.txt next to the word millionth
 
-S :>>
+**Solución:**   
 Comandos:  
 
 1. `grep "millionth" data.txt`   (El mas optimo)  
@@ -149,7 +156,7 @@ Comandos:
 
 LEVEL GOAL: The password for the next level is stored in the file data.txt and is the only line of text that occurs only once
 
-S :>>
+**Solución:**   
 
 Comandos:  
 1. `cat data.txt | sort | unq -u `  
@@ -163,7 +170,7 @@ Comandos:
 
 Level Goal: The password for the next level is stored in the file data.txt in one of the few human-readable strings, preceded by several ‘=’ characters.
 
-S :>>
+**Solución:**   
  
 Comandos:
 `strings data.txt | grep "=="`
@@ -176,7 +183,7 @@ Comandos:
 
 LEVEL GOAL: The password for the next level is stored in the file data.txt, which contains base64 encoded data  
 
-S :>>
+**Solución:**   
 Al ejecutar `cat data.txt` la salida es así:  
 
 ```sh
@@ -195,7 +202,7 @@ Comando:
 
 LEVEL GOAL: The password for the next level is stored in the file data.txt, where all lowercase (a-z) and uppercase (A-Z) letters have been rotated by 13 positions
 
-S :>> 
+**Solución:**    
 `cat data.txt | tr '[G-ZA-Fg-za-f]' '[T-ZA-St-za-s]' | awk 'NF{print $NF}'`
   
 EXPLICACIÓN: `tr` no es más que una abreviación de translate.  
@@ -204,7 +211,7 @@ EXPLICACIÓN: `tr` no es más que una abreviación de translate.
 
 LEVEL GOAL: The password for the next level is stored in the file data.txt, which is a hexdump of a file that has been repeatedly compressed. For this level it may be useful to create a directory under /tmp in which you can work. Use mkdir with a hard to guess directory name. Or better, use the command “mktemp -d”. Then copy the datafile using cp, and rename it using mv (read the manpages!)
 
-S :>>
+**Solución:**   
 
 `cat data.txt`  
 
@@ -250,7 +257,7 @@ done
 
 LEVEL GOAL: The password for the next level is stored in /etc/bandit_pass/bandit14 and can only be read by user bandit14. For this level, you don’t get the next password, but you get a private SSH key that can be used to log into the next level. Note: localhost is a hostname that refers to the machine you are working on
 
-S :>>
+**Solución:**   
 
 ```sh
 bandit13@bandit:~$ ls  # Al entrar en bandit13 si ejecuto ls obtengo: 
@@ -301,7 +308,7 @@ Password :)
 
 LEVEL GOAL: The password for the next level can be retrieved by submitting the password of the current level to port 30000 on localhost.
 
-S :>>
+**Solución:**   
 `echo "" > /dev/tcp/127.0.0.1/30123`    ->> verificar si el puerto 30000 esta abierto
 `echo $?`    ->> estatus de la salida del ultimo comando
 
@@ -321,7 +328,7 @@ LEVEL GOAL: The password for the next level can be retrieved by submitting the p
 
 Helpful note: Getting “DONE”, “RENEGOTIATING” or “KEYUPDATE”? Read the “CONNECTED COMMANDS” section in the manpage.  
 
-S :>>  
+**Solución:**     
 
 1. `openssl s_client -connect localhost:30001  `
 
@@ -370,7 +377,7 @@ LEVEL GOAL:  There are 2 files in the homedirectory: passwords.old and passwords
 
 NOTE: if you have solved this level and see ‘Byebye!’ when trying to log into bandit18, this is related to the next level, bandit19  
 
-S :>>
+**Solución:**   
 
 `diff /home/bandit17/passwords.old /home/bandit17/passwords.new`
  
@@ -378,7 +385,7 @@ S :>>
 
 LEVEL GOAL: The password for the next level is stored in a file readme in the homedirectory. Unfortunately, someone has modified .bashrc to log you out when you log in with SSH.  
 
-S :>>  
+**Solución:**     
 
 ```sh
 ssh -p 2220 bandit18@bandit.labs.overthewire.org "bash --norc"
@@ -397,7 +404,7 @@ EXPLICACIÓN:
 
 LEVEL GOAL: To gain access to the next level, you should use the setuid binary in the homedirectory. Execute it without arguments to find out how to use it. The password for this level can be found in the usual place (/etc/bandit_pass), after you have used the setuid binary.  
 
-S :>>  
+**Solución:**     
 
 `./bandit20-do cat /etc/bandit_pass/bandit20`  
 
@@ -407,7 +414,7 @@ LEVEL GOAL: There is a setuid binary in the homedirectory that does the followin
 
 NOTE: Try connecting to your own network daemon to see if it works as you think  
 
-S :>>  
+**Solución:**     
 
 1. En una terminal ejecutar: 
 `nc -nlvp 6020`
@@ -432,7 +439,7 @@ Luego pegar PASSWORD bandit20 :) en la terminal donde ejecutamos `nc -nlvp 6020`
 
 LEVEL GOAL: A program is running automatically at regular intervals from cron, the time-based job scheduler. Look in /etc/cron.d/ for the configuration and see what command is being executed.  
 
-S :>>
+**Solución:**   
 ```sh
 ls -l /etc/cron.d  
 cat /etc/cron.d/cronjob_bandit22  
@@ -447,7 +454,7 @@ LEVEL GOAL: A program is running automatically at regular intervals from cron, t
 
 NOTE: Looking at shell scripts written by other people is a very useful skill. The script for this level is intentionally made easy to read. If you are having problems understanding what it does, try executing it to see the debug information it prints.   
 
-S :>>
+**Solución:**   
 
 ```sh
 ls -l /etc/cron.d  
@@ -465,7 +472,7 @@ NOTE: This level requires you to create your own first shell-script. This is a v
 
 NOTE 2: Keep in mind that your shell script is removed once executed, so you may want to keep a copy around…  
 
-S :>>  
+**Solución:**     
 
 ```sh
 cat /etc/cron.d/cronjob_bandit24
@@ -495,7 +502,7 @@ LEVEL GOAL: A daemon is listening on port 30002 and will give you the password f
 
 You do not need to create new connections each time.  
 
-S :>>  
+**Solución:**     
 
 - Generar toda la combinatoria  
 ```sh
@@ -530,7 +537,7 @@ LEVEL GOAL: Logging in to bandit26 from bandit25 should be fairly easy… The sh
 
 NOTE: if you’re a Windows user and typically use Powershell to ssh into bandit: Powershell is known to cause issues with the intended solution to this level. You should use command prompt instead.  
 
-S :>>
+**Solución:**   
 ```sh
 cat /etc/passwd | grep bandit26
 cat /usr/bin/showtext 
@@ -567,7 +574,7 @@ En vin escribo los siguientes comando:
 
 LEVEL GOAL: Good job getting a shell! Now hurry and grab the password for bandit27!  
 
-S :>>
+**Solución:**   
 
 Ir al Level 25 → Level 26   
 
@@ -578,7 +585,7 @@ LEVEL GOAL: There is a git repository at ssh://bandit27-git@localhost/home/bandi
 
 Clone the repository and find the password for the next level.  
 
-S :>>
+**Solución:**   
 ```sh
 mktemp -d
 cd /tmp/ID
@@ -595,7 +602,7 @@ LEVEL GOAL: There is a git repository at ssh://bandit28-git@localhost/home/bandi
 
 Clone the repository and find the password for the next level.  
 
-S :>>
+**Solución:**   
 ```sh
 mktemp -d
 cd /tmp/ID
@@ -614,7 +621,7 @@ LEVEL GOAL: There is a git repository at ssh://bandit29-git@localhost/home/bandi
 
 Clone the repository and find the password for the next level.  
 
-S :>>
+**Solución:**   
 
 ```sh
 mktemp -d
@@ -655,7 +662,7 @@ LEVEL GOAL: There is a git repository at ssh://bandit31-git@localhost/home/bandi
 
 Clone the repository and find the password for the next level.  
 
-S :>>  
+**Solución:**     
 
 ```sh
 mktemp -d
@@ -675,7 +682,7 @@ git push
 
 LEVEL GOAL: After all this git stuff, it’s time for another escape. Good luck!  
 
-S :>>  
+**Solución:**     
 
 ```sh
 $0
@@ -686,6 +693,3 @@ cat /etc/bandit_pass/bandit33
 
 
 LEVEL GOAL:  NO EXISTE
-S :>>
-1.  
-
